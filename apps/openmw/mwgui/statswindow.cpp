@@ -106,7 +106,7 @@ namespace MWGui
     void StatsWindow::populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2)
     {
         // Add a line separator if there are items above
-        if (!mSkillWidgets.empty())
+        if (!rw_mSkillWidgets.empty())
         {
             addSeparator(coord1, coord2);
         }
