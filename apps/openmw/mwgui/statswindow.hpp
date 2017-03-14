@@ -54,7 +54,8 @@ namespace MWGui
 
             SkillDisplayGroup createSkillDisplayGroup(std::string name, std::string value, std::string valueState, MyGUI::IntCoord nameCoord, MyGUI::IntCoord valueCoord);
 
-            void populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
+            MyGUI::TextBox* createSkillGroup(std::string label, MyGUI::IntCoord coord1, MyGUI::IntCoord coord2);
+            void populateSkills();
             //end rewrite
 
 

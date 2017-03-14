@@ -144,16 +144,25 @@ namespace MWGui
         };
     }
 
-    void StatsWindow::populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2)
+    MyGUI::TextBox* StatsWindow::createSkillGroup(std::string label, MyGUI::IntCoord coord1, MyGUI::IntCoord coord2)
     {
-        // Add a line separator if there are items above
-        if (!mSkillDisplayGroups.empty())
-        {
-            addSeparator(coord1, coord2);
-        }
+        MyGUI::TextBox* groupWidget;
 
-        addGroup(MWBase::Environment::get().getWindowManager()->getGameSettingString(titleId, titleDefault), coord1, coord2);
+        MyGUI::IntCoord groupCoord = MyGUI::IntCoord(0, coord1.top, coord1.width + coord2.width, coord1.height);
+        MyGUI::Align::Enum groupAlignment = MyGUI::Align::Left | MyGUI::Align::Top | MyGUI::Align::HStretch;
 
+        groupWidget = mSkillView->createWidget<MyGUI::TextBox>("SandBrightText", groupCoord, groupAlignment);
+        groupWidget->setCaption(label);
+        groupWidget->eventMouseWheel += MyGUI::newDelegate(this, &StatsWindow::onMouseWheel);
+
+
+        return groupWidget;
+        coord1.top += sLineHeight;
+        coord2.top += sLineHeight;
+    }
+
+    void StatsWindow::populateSkills()
+    {
         SkillList::const_iterator end = skills.end();
         for(SkillList::const_iterator it = skills.begin(); it != end; ++it)
         {
@@ -173,8 +182,8 @@ namespace MWGui
             std::string icon = "icons\\k\\" + ESM::Skill::sIconNames[skillId];
             std::string state = skillWidgetState(base, modified);
 
-            SkillDisplayGroup group = createSkillDisplayGroup();
-            mSkillDisplayGroups.push_back(group);
+            //SkillDisplayGroup group = createSkillDisplayGroup();
+            //mSkillDisplayGroups.push_back(group);
         }
     }
     //end rewrite
