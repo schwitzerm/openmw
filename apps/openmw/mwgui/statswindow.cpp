@@ -108,7 +108,8 @@ namespace MWGui
         this->valueWidget->setUserString("RangePosition_SkillProgress", rangePosition);
     }
 
-    void StatsWindow::SkillDisplayGroup::setSkillMaxedSettings(MyGUI::TextBox *widget, int base) {
+    void StatsWindow::SkillDisplayGroup::setSkillMaxedSettings(MyGUI::TextBox *widget, int base)
+    {
         bool isMaxed = base >= 100; //takes values that are potentially larger than the "cap" into account
         widget->setUserString("Visible_SkillMaxed", MyGUI::utility::toString(isMaxed));
         widget->setUserString("UserData^Hidden_SkillMaxed", MyGUI::utility::toString(!isMaxed));
