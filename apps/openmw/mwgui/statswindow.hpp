@@ -41,16 +41,18 @@ namespace MWGui
 
         private:
             //rewrite
-            typedef struct SkillDisplayWidget
+            typedef struct SkillDisplayGroup
             {
                 MyGUI::TextBox* nameWidget;
                 MyGUI::TextBox* valueWidget;
-            } SkillDisplayWidget;
 
-            std::vector<SkillDisplayWidget> rw_mSkillWidgets;
+                void setProgress(int base, float progress, float requirement);
+                void setSkillMaxedSettings(MyGUI::TextBox *widget, int base);
+            } SkillDisplayGroup;
 
-            SkillDisplayWidget createSkillDisplayWidget();
-            void setSkillDisplayWidgetProperties(SkillDisplayWidget *widget);
+            std::vector<SkillDisplayGroup> mSkillDisplayGroups;
+
+            SkillDisplayGroup createSkillDisplayGroup();
 
             void populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
             //end rewrite

@@ -82,7 +82,8 @@ namespace MWGui
 
 
     //rewrite
-    std::string skillWidgetState(int base, int modified) {
+    std::string skillWidgetState(int base, int modified)
+    {
         std::string state = "normal";
         if(modified > base)
             state = "increased";
@@ -92,21 +93,39 @@ namespace MWGui
         return state;
     }
 
-    SkillDisplayWidget StatsWindow::createSkillDisplayWidget() {
-        //TODO: impl
-        throw new std::logic_error("StatsWindow::createSkillDisplayWidget() not implemented");
+    void StatsWindow::SkillDisplayGroup::setProgress(int base, float progress, float requirement)
+    {
+        setSkillMaxedSettings(this->nameWidget, base);
+        setSkillMaxedSettings(this->valueWidget, base);
+
+        int percent = (int) (progress / requirement * 100.0f + 0.5f);
+        std::string skillProgressText = MyGUI::utility::toString(percent + "/100");
+        std::string rangePosition = MyGUI::utility::toString(percent);
+
+        this->nameWidget->setUserString("Caption_SkillProgressText", skillProgressText);
+        this->nameWidget->setUserString("Caption_SkillProgressText", skillProgressText);
+        this->valueWidget->setUserString("RangePosition_SkillProgress", rangePosition);
+        this->valueWidget->setUserString("RangePosition_SkillProgress", rangePosition);
     }
 
-    void StatsWindow::setSkillDisplayWidgetProperties(StatsWindow::SkillDisplayWidget *widget)
+    void StatsWindow::SkillDisplayGroup::setSkillMaxedSettings(MyGUI::TextBox *widget, int base) {
+        bool isMaxed = base >= 100; //takes values that are potentially larger than the "cap" into account
+        widget->setUserString("Visible_SkillMaxed", MyGUI::utility::toString(isMaxed));
+        widget->setUserString("UserData^Hidden_SkillMaxed", MyGUI::utility::toString(!isMaxed));
+        widget->setUserString("Visible_SkillProgressVBox", MyGUI::utility::toString(!isMaxed));
+        widget->setUserString("UserData^Hidden_SkillProgressVBox", MyGUI::utility::toString(isMaxed));
+    }
+
+    StatsWindow::SkillDisplayGroup StatsWindow::createSkillDisplayGroup()
     {
         //TODO: impl
-        throw new std::logic_error("StatsWindow::setSkillDisplayWidgetProperties() not implemented");
+        throw new std::logic_error("StatsWindow::createSkillDisplayWidget() not implemented");
     }
 
     void StatsWindow::populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2)
     {
         // Add a line separator if there are items above
-        if (!rw_mSkillWidgets.empty())
+        if (!mSkillDisplayGroups.empty())
         {
             addSeparator(coord1, coord2);
         }
@@ -119,22 +138,21 @@ namespace MWGui
             const MWBase::Environment &environment = MWBase::Environment::get();
             const MWWorld::ESMStore &esmStore = environment.getWorld()->getStore();
 
-            const int skillId = *it;
+            int skillId = *it;
             const std::string &skillNameId = ESM::Skill::sSkillNameIds[skillId];
             const MWMechanics::SkillValue &stat = mSkillValues.find(skillId)->second;
             const ESM::Skill *skill = esmStore.get<ESM::Skill>().find(skillId);
             const ESM::Attribute *attr = esmStore.get<ESM::Attribute>().find((size_t) skill->mData.mAttribute);
 
-            const int base = stat.getBase();
-            const int modified = stat.getModified();
-            const std::string icon = "icons\\k\\" + ESM::Skill::sIconNames[skillId];
 
 
+            int base = stat.getBase();
+            int modified = stat.getModified();
+            std::string icon = "icons\\k\\" + ESM::Skill::sIconNames[skillId];
             std::string state = skillWidgetState(base, modified);
 
-            SkillDisplayWidget widget = createSkillDisplayWidget();
-            setSkillDisplayWidgetProperties(&widget);
-            rw_mSkillWidgets.push_back(widget);
+            SkillDisplayGroup group = createSkillDisplayGroup();
+            mSkillDisplayGroups.push_back(group);
         }
     }
     //end rewrite
