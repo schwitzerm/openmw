@@ -78,3 +78,6 @@ moc_*.cxx
 gamecontrollerdb.txt
 openmw.appdata.xml
 venv/
+
+
+cmake-build-debug

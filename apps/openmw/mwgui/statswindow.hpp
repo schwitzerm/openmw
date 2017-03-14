@@ -40,6 +40,22 @@ namespace MWGui
             virtual void open() { onWindowResize(mMainWidget->castType<MyGUI::Window>()); }
 
         private:
+            //rewrite
+            typedef struct SkillDisplayWidget
+            {
+                MyGUI::TextBox* nameWidget;
+                MyGUI::TextBox* valueWidget;
+            } SkillDisplayWidget;
+
+            std::vector<SkillDisplayWidget> rw_mSkillWidgets;
+
+            SkillDisplayWidget createSkillDisplayWidget();
+            void setSkillDisplayWidgetProperties(SkillDisplayWidget *widget);
+
+            void populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
+            //end rewrite
+
+
             void addSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
             void addSeparator(MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
             void addGroup(const std::string &label, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
