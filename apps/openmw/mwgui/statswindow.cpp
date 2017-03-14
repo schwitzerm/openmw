@@ -117,10 +117,31 @@ namespace MWGui
         widget->setUserString("UserData^Hidden_SkillProgressVBox", MyGUI::utility::toString(isMaxed));
     }
 
-    StatsWindow::SkillDisplayGroup StatsWindow::createSkillDisplayGroup()
+    StatsWindow::SkillDisplayGroup StatsWindow::createSkillDisplayGroup(std::string name, std::string value, std::string valueState, MyGUI::IntCoord nameCoord, MyGUI::IntCoord valueCoord)
     {
-        //TODO: impl
-        throw new std::logic_error("StatsWindow::createSkillDisplayWidget() not implemented");
+        MyGUI::TextBox *nameWidget, *valueWidget;
+
+        MyGUI::Align::Enum nameWidgetAlignments = MyGUI::Align::Left | MyGUI::Align::Top | MyGUI::Align::HStretch;
+        MyGUI::Align::Enum valueWidgetAlignments = MyGUI::Align::Right | MyGUI::Align::Top;
+
+        nameWidget = mSkillView->createWidget<MyGUI::TextBox>("SandText", nameCoord, nameWidgetAlignments);
+        nameWidget->setCaption(name);
+        nameWidget->eventMouseWheel += MyGUI::newDelegate(this, &StatsWindow::onMouseWheel);
+
+        valueWidget = mSkillView->createWidget<MyGUI::TextBox>("SandText", valueCoord, valueWidgetAlignments);
+        valueWidget->setCaption(value);
+        valueWidget->_setWidgetState(valueState);
+        valueWidget->eventMouseWheel += MyGUI::newDelegate(this, &StatsWindow::onMouseWheel);
+
+        // resize dynamically according to text size
+        int textWidthPlusMargin = valueWidget->getTextSize().width + 12;
+        nameWidget->setSize(nameWidget->getSize() + MyGUI::IntSize(valueCoord.width - textWidthPlusMargin, 0));
+        valueWidget->setCoord(valueCoord.left + valueCoord.width - textWidthPlusMargin, valueCoord.top, textWidthPlusMargin, valueCoord.height);
+
+        return SkillDisplayGroup {
+            nameWidget,
+            valueWidget
+        };
     }
 
     void StatsWindow::populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2)

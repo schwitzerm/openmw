@@ -52,7 +52,7 @@ namespace MWGui
 
             std::vector<SkillDisplayGroup> mSkillDisplayGroups;
 
-            SkillDisplayGroup createSkillDisplayGroup();
+            SkillDisplayGroup createSkillDisplayGroup(std::string name, std::string value, std::string valueState, MyGUI::IntCoord nameCoord, MyGUI::IntCoord valueCoord);
 
             void populateSkills(const SkillList &skills, const std::string &titleId, const std::string &titleDefault, MyGUI::IntCoord &coord1, MyGUI::IntCoord &coord2);
             //end rewrite
