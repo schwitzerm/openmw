@@ -157,8 +157,6 @@ namespace MWGui
 
 
         return groupWidget;
-        coord1.top += sLineHeight;
-        coord2.top += sLineHeight;
     }
 
     void StatsWindow::populateSkills()
